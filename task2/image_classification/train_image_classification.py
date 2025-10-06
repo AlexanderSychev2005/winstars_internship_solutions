@@ -9,6 +9,18 @@ import argparse
 
 
 def build_model(num_classes, input_shape):
+    """
+    Builds and returns an EfficientNetB0 model with custom-made top layers for classification.
+    The EfficientNet architecture is represented by a set of ready-to-use models. The choice depends on the required
+    accuracy, available training resources, and input image resolution. Models are labelled from B0 (simplest)
+    to B7 (most powerful).
+    I'll use EfficientNet-B0 architecture with the weights from ImageNet dataset. EfficientNet-B0 is trained on the
+    ImageNet dataset and can classify images into 1000 object categories. The point is to re-use the weights from the
+    pre-trained models downloading and using directly or integrating into a new model that we'll do.
+
+    The include_top parameter is set to False, so the network does not include he top layer/ output layer.
+    We have a possibility to add our own output layer depending on our needs. (10 values)
+    """
     print("Input shape:", input_shape)
     base_model = EfficientNetB0(
         include_top=False, weights="imagenet", input_shape=input_shape
@@ -22,6 +34,15 @@ def build_model(num_classes, input_shape):
 
 
 def get_dataset(data_path, batch_size, target_size):
+    """
+    Loads the dataset from the dataset directory, and splits it into training and validation sets.
+    The images there are resized to the target size, and normalized to the range [0, 1].
+    One hot encoding is used to represent the labels.
+    The dataset is returned as TensorFlow Dataset objects for both training and validation, which are efficient because
+    we use generators to load the data in batches during training, so that we don't load the entire dataset into memory at once.
+    80% of the data is used for training, and 20% for validation.
+    10 classes are used, corresponding to the 10 animal categories in the Animals10 dataset.
+    """
 
     train_dataset = tf.keras.utils.image_dataset_from_directory(
         data_path,
@@ -42,7 +63,9 @@ def get_dataset(data_path, batch_size, target_size):
         color_mode="rgb",
     )
 
-    train_dataset = train_dataset.map(lambda x, y: (x / 255.0, tf.one_hot(y, depth=10)))
+    train_dataset = train_dataset.map(
+        lambda x, y: (x / 255.0, tf.one_hot(y, depth=10))
+    )  # Normalizing and one-hot encoding
     val_dataset = val_dataset.map(lambda x, y: (x / 255.0, tf.one_hot(y, depth=10)))
 
     # train_dataset = train_dataset.prefetch(buffer_size=tf.data.AUTOTUNE)

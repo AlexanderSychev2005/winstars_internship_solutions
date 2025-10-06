@@ -1,5 +1,11 @@
 tensorflow
+keras==2.10.0
 scikit-learn
 numpy
 opencv-python
-
+spacy
+spacy-transformers
+jupyter
+matplotlib
+pandas
+seaborn
