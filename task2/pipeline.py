@@ -25,14 +25,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--text_input",
         type=str,
-        default="I love that cat!",
+        default="Wow! That cat is so cutyy!!",
         help="Input text containing an animal entity",
-    )
-    parser.add_argument(
-        "--image_target_size",
-        type=tuple,
-        default=(256, 256),
-        help="Target size for image resizing (image will be resized to target_size)",
     )
     args = parser.parse_args()
 

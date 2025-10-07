@@ -1,9 +1,11 @@
 tensorflow
+keras==2.10.0
+
 torch
 transformers
 datasets
 accelerate
-keras==2.10.0
+
 scikit-learn
 numpy
 opencv-python

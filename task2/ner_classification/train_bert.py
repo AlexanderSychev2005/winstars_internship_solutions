@@ -141,8 +141,10 @@ def encode_data_bio(tokenizer, texts, entities):
 
     for i, offsets in enumerate(encodings["offset_mapping"]):
         labels = []
-        for (start, end) in offsets:
-            if start == 0 and end == 0:  # [PAD] token, set label to -100, so it's ignored in loss computation
+        for start, end in offsets:
+            if (
+                start == 0 and end == 0
+            ):  # [PAD] token, set label to -100, so it's ignored in loss computation
                 labels.append(-100)
             else:
                 labels.append(labels_map["O"])  # Not an entity, set label to O
@@ -152,7 +154,8 @@ def encode_data_bio(tokenizer, texts, entities):
             token_indices = [
                 idx
                 for idx, (s, e) in enumerate(offsets)
-                if s >= start_char and e <= end_char  # Token is inside the entity or the entity itself
+                if s >= start_char
+                and e <= end_char  # Token is inside the entity or the entity itself
             ]
             if token_indices:
                 labels[token_indices[0]] = labels_map["B-ANIMAL"]
@@ -187,7 +190,7 @@ if __name__ == "__main__":
         help="Path to save the trained model",
     )
     parser.add_argument(
-        "-num_of_epochs",
+        "--num_of_epochs",
         type=int,
         default=5,
         help="Number of training epochs",
@@ -215,7 +218,9 @@ if __name__ == "__main__":
 
     # Generating dataset
     texts, entities = make_dataset(args.num_samples)
-    print(f"Generated {len(texts)} sentences, example: \n {texts[0]} \n labels: \n {entities[0]}.")
+    print(
+        f"Generated {len(texts)} sentences, example: \n {texts[0]} \n labels: \n {entities[0]}."
+    )
 
     # Tokenization and encoding the data
     tokenizer = BertTokenizerFast.from_pretrained(args.model_name)
@@ -230,7 +235,9 @@ if __name__ == "__main__":
     # Decoding example
     example = train_dataset[0]
     decoded_example = tokenizer.decode(example["input_ids"], skip_special_tokens=False)
-    print(f"Decoded example: \n {decoded_example} \n with labels: \n {example['labels']} .")
+    print(
+        f"Decoded example: \n {decoded_example} \n with labels: \n {example['labels']} ."
+    )
 
     model = BertForTokenClassification.from_pretrained(
         args.model_name, num_labels=len(labels)

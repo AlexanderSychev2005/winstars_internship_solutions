@@ -20,14 +20,19 @@ def infer_bert(text, model_path):
         outputs = model(**encoding)
 
     logits = outputs.logits
-    predictions = torch.argmax(logits,
-                               dim=-1).squeeze().tolist()  # get the label with the highest probability for each token, remove extra dimentions
+    predictions = (
+        torch.argmax(logits, dim=-1).squeeze().tolist()
+    )  # get the label with the highest probability for each token, remove extra dimensions
 
-    tokens = tokenizer.convert_ids_to_tokens(encoding["input_ids"].squeeze())  # convert token ids to tokens
+    tokens = tokenizer.convert_ids_to_tokens(
+        encoding["input_ids"].squeeze()
+    )  # convert token ids to tokens
 
     entities = []
     for token, pred in zip(tokens, predictions):
-        if token in tokenizer.all_special_tokens:  # Skip special tokens, for example, [CLS], [SEP]
+        if (
+            token in tokenizer.all_special_tokens
+        ):  # Skip special tokens, for example, [CLS], [SEP]
             continue
 
         label = id2label[pred]
@@ -48,7 +53,9 @@ def predict_animal(text, model_path):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Infer animal entity from text using a fine-tuned BERT model")
+    parser = argparse.ArgumentParser(
+        description="Infer animal entity from text using a fine-tuned BERT model"
+    )
     parser.add_argument(
         "--test_sentence",
         type=str,
