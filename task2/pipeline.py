@@ -3,10 +3,10 @@ from ner_classification.infer_bert import predict_animal
 import argparse
 
 
-def is_predictions_equal(image, text, image_target_size):
+def is_predictions_equal(image, text):
     image_model_path = "./image_classification/models/final_model.h5"
     text_model_path = "./ner_classification/models/ner_model_bert"
-    image_prediction, _ = predict_image(image, image_model_path, image_target_size)
+    image_prediction, _ = predict_image(image, image_model_path)
     text_prediction = predict_animal(text, text_model_path)
     return image_prediction == text_prediction
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if is_predictions_equal(args.image_path, args.text_input, args.image_target_size):
+    if is_predictions_equal(args.image_path, args.text_input):
         print("The predictions from both models are the same.")
     else:
         print("The predictions from both models are different.")

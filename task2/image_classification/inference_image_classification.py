@@ -45,7 +45,7 @@ def preprocess_image(img_path, target_size):
     return img
 
 
-def predict_image(img_path, model_path, target_size):
+def predict_image(img_path, model_path, target_size=(256, 256)):
     """
     Predicts the class of an image using a trained EfficientNetB0 model. Chooses the class with the highest probability,
     and translates it to English. Also, returns the confidence score of the prediction.
