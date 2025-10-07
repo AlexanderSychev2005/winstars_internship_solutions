@@ -7,7 +7,6 @@ from transformers import (
 )
 from datasets import Dataset
 import argparse
-from pathlib import Path
 
 labels = ["O", "B-ANIMAL"]  # Outside, Beginning of animal
 
@@ -76,6 +75,9 @@ animals = [
 def pluralize(animal):
     """
     Returns the plural form of an animal name. Handles special cases like "sheep" and words ending with "y".
+
+    :param animal: Animal name to pluralize
+    :return: Plural form of the animal name
     """
     if animal == "sheep":
         return "sheep"
@@ -88,6 +90,10 @@ def pluralize(animal):
 def make_sentence_and_labels(animal):
     """
     Generates a sentence, which includes the given animal, and adds the start and the end indexes.
+
+    :param animal: Animal name to include in the sentence
+    :return: sentence - generated sentence with the animal, labels - list of tuples with start and end
+    indexes
     """
     template = random.choice(templates)
     article = "an" if animal[0].lower() in "aeiou" else "a"
@@ -115,6 +121,9 @@ def make_sentence_and_labels(animal):
 def make_dataset(n_samples):
     """
     Generates a dataset with n_samples samples using the function to create sentences and labels.
+
+    :param n_samples: Number of samples to generate
+    :return: texts - list of generated sentences, entities - list of labels (start, end) for each sentence
     """
     texts, entities = [], []
 
@@ -133,6 +142,11 @@ def encode_data_bio(tokenizer, texts, entities):
     positions of each token (start, end).
     truncation - truncate sequences to the model's maximum length
     padding - add padding tokens to make all sequences the same length
+
+    :param tokenizer: Tokenizer to use for encoding the texts
+    :param texts: List of input texts (sentences)
+    :param entities: List of entities (start, end) for each text
+    :return: Encoded texts and labels in BIO format, which is appropriate for token classification model
     """
     encodings = tokenizer(
         texts, truncation=True, padding=True, return_offsets_mapping=True

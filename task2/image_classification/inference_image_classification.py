@@ -34,6 +34,10 @@ def preprocess_image(img_path, target_size):
     """
     Preprocess the image for model prediction. Provides resizing, normalization, and adding one more dimension, which is
     required by the model.
+
+    :param img_path: Path to the input image
+    :param target_size: Target size for resizing the image
+    :return: Preprocessed image ready for model prediction
     """
     img = cv2.imread(img_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -49,6 +53,11 @@ def predict_image(img_path, model_path, target_size=(256, 256)):
     """
     Predicts the class of an image using a trained EfficientNetB0 model. Chooses the class with the highest probability,
     and translates it to English. Also, returns the confidence score of the prediction.
+
+    :param img_path: Path to the input image
+    :param model_path: Path to the trained image classification model
+    :param target_size: Target size for resizing the image
+    :return: Predicted label (animal) and confidence score
     """
     model = load_model(model_path)
     img_array = preprocess_image(img_path, target_size)

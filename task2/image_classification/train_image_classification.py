@@ -20,6 +20,10 @@ def build_model(num_classes, input_shape):
 
     The include_top parameter is set to False, so the network does not include he top layer/ output layer.
     We have a possibility to add our own output layer depending on our needs. (10 values)
+
+    :param num_classes: Number of classes for classification (10 for Animals10 dataset)
+    :param input_shape: Shape of the input images (height, width, channels)
+    :return: Ready for training model
     """
     print("Input shape:", input_shape)
     base_model = EfficientNetB0(
@@ -42,6 +46,11 @@ def get_dataset(data_path, batch_size, target_size):
     we use generators to load the data in batches during training, so that we don't load the entire dataset into memory at once.
     80% of the data is used for training, and 20% for validation.
     10 classes are used, corresponding to the 10 animal categories in the Animals10 dataset.
+
+    :param data_path: Path to the dataset directory
+    :param batch_size: Batch size for training
+    :param target_size: Target size for resizing the images (height, width)
+    :return: Training and validation datasets
     """
 
     train_dataset = tf.keras.utils.image_dataset_from_directory(
@@ -80,7 +89,49 @@ def get_dataset(data_path, batch_size, target_size):
     return train_dataset, val_dataset
 
 
-def main(args):
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Training EfficientNetB0 model on Animals10 dataset"
+    )
+    parser.add_argument(
+        "--data_path",
+        type=str,
+        default=None,
+        help="Path to the dataset (default: download from Kaggle)",
+    )
+    parser.add_argument(
+        "--batch_size", type=int, default=32, help="Batch size for training"
+    )
+    parser.add_argument(
+        "--target_size",
+        type=int,
+        default=256,
+        help="Target image size (images will be resized to target_size x target_size)",
+    )
+    parser.add_argument(
+        "--epochs", type=int, default=12, help="Number of training epochs"
+    )
+    parser.add_argument(
+        "--lr", type=float, default=1e-3, help="Learning rate for optimizer"
+    )
+    parser.add_argument(
+        "--model_path",
+        type=str,
+        default="models/final_model.h5",
+        help="Path to save final model",
+    )
+    parser.add_argument(
+        "--checkpoint_path",
+        type=str,
+        default="models/effnet_checkpoint.h5",
+        help="Path to save checkpoint",
+    )
+    parser.add_argument(
+        "--log_dir", type=str, default="logs", help="Directory for TensorBoard logs"
+    )
+
+    args = parser.parse_args()
+
     if args.data_path:
         data_path = Path(args.data_path)
     else:
@@ -126,48 +177,3 @@ def main(args):
     model_dir.mkdir(parents=True, exist_ok=True)
 
     model.save(args.model_path)
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Training EfficientNetB0 model on Animals10 dataset"
-    )
-    parser.add_argument(
-        "--data_path",
-        type=str,
-        default=None,
-        help="Path to the dataset (default: download from Kaggle)",
-    )
-    parser.add_argument(
-        "--batch_size", type=int, default=32, help="Batch size for training"
-    )
-    parser.add_argument(
-        "--target_size",
-        type=int,
-        default=256,
-        help="Target image size (images will be resized to target_size x target_size)",
-    )
-    parser.add_argument(
-        "--epochs", type=int, default=12, help="Number of training epochs"
-    )
-    parser.add_argument(
-        "--lr", type=float, default=1e-3, help="Learning rate for optimizer"
-    )
-    parser.add_argument(
-        "--model_path",
-        type=str,
-        default="models/final_model.h5",
-        help="Path to save final model",
-    )
-    parser.add_argument(
-        "--checkpoint_path",
-        type=str,
-        default="models/effnet_checkpoint.h5",
-        help="Path to save checkpoint",
-    )
-    parser.add_argument(
-        "--log_dir", type=str, default="logs", help="Directory for TensorBoard logs"
-    )
-
-    args = parser.parse_args()
-    main(args)

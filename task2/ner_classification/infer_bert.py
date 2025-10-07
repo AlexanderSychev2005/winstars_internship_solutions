@@ -6,6 +6,10 @@ import argparse
 def infer_bert(text, model_path):
     """
     Infers entities from the input text using a fine-tuned BERT model.
+
+    :param text: Input text (sentence) to extract entities from
+    :param model_path: Path to the fine-tuned BERT model
+    :return: List of extracted entities in the format [{"entity": entity_type, "word": entity_word}, ...]
     """
     # Loading the model and the tokenizer
     tokenizer = BertTokenizerFast.from_pretrained(model_path)
@@ -46,8 +50,13 @@ def infer_bert(text, model_path):
 def predict_animal(text, model_path):
     """
     Predicts the animal entity from the input text using a fine-tuned BERT model.
+
+    :param text: Input text (sentence), which contains an animal entity
+    :param model_path: Path to the fine-tuned BERT model
+    :return: Extracted animal entity (word) or None if no entity is found
     """
     entities = infer_bert(text, model_path)
+    print(entities)
     animal = entities[0]["word"] if entities else None
     return animal
 

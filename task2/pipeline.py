@@ -4,6 +4,13 @@ import argparse
 
 
 def is_predictions_equal(image, text):
+    """
+    Compares predictions from the image classification model and the NER model.
+
+    :param image: Path to the image file
+    :param text: Input text, which contains an animal entity
+    :return: True if both models predict the same animal, False otherwise
+    """
     image_model_path = "./image_classification/models/final_model.h5"
     text_model_path = "./ner_classification/models/ner_model_bert"
     image_prediction, _ = predict_image(image, image_model_path)
