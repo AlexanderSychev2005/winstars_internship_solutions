@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 from tensorflow.keras.models import load_model
 import cv2
@@ -83,7 +85,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--image_path",
         type=str,
-        default="examples/belka.png",
+        default="examples/cat.png",
         help="Path to the input image",
     )
     parser.add_argument(
@@ -93,7 +95,9 @@ if __name__ == "__main__":
         default=(256, 256),
         help="Target image size (width height)",
     )
+
     args = parser.parse_args()
+    # model_path = Path(args.model_path)
     predicted_label_translated, confidence = predict_image(
         args.image_path, args.model_path, args.target_size
     )

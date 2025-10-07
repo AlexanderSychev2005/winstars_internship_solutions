@@ -56,7 +56,6 @@ def predict_animal(text, model_path):
     :return: Extracted animal entity (word) or None if no entity is found
     """
     entities = infer_bert(text, model_path)
-    print(entities)
     animal = entities[0]["word"] if entities else None
     return animal
 

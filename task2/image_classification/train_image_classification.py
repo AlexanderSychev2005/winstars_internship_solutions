@@ -81,7 +81,7 @@ def get_dataset(data_path, batch_size, target_size):
     # val_dataset = val_dataset.prefetch(buffer_size=tf.data.AUTOTUNE)
 
     for images, labels in train_dataset.take(1):
-        print(images.shape, labels.shape)
+        print(f"Batch 1: {images.shape, labels.shape}")
 
     test_image = next(iter(train_dataset.take(1)))[0][0].numpy()
     print("Test image shape:", test_image.shape)

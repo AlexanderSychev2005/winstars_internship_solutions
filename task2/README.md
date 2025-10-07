@@ -72,11 +72,11 @@
     <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/998/d99/1c7/998d991c728ea168111e48fdfeff8bb4.png" width="600">
     
     ### Training the model:
-    `python train_image_classification.py --epochs 12 --batch_size 32 --target_size 256
+    `python image_classification/train_image_classification.py --epochs 12 --batch_size 32 --target_size 256
     `
     
     ### Inferencing the model:
-    `python inference_image_classification.py --image_path examples/cat.png --model_path models/final_model.h5
+    `python image_classification/inference_image_classification.py --image_path image_classification/examples/cat.png --model_path "image_classification/models/final_model.h5"
     `
     
     Output example: `Predicted label: cat, Confidence: 0.9743`
@@ -87,10 +87,10 @@
 The model identifies animals in text using tokens (O, "B-ANIMAL").
 Synthetic data is generated using different templates.
 ### Training the model:
-`python train_bert.py --num_samples 2000 --model_name bert-base-cased --output_dir models/ner_model_bert --num_of_epochs 5 --batch_size 16 --learning_rate 5e-5 --test_size 0.2
+`python ner_classification/train_bert.py --num_samples 2000 --model_name bert-base-cased --output_dir ner_classification/models/ner_model_bert --num_of_epochs 5 --batch_size 16 --learning_rate 5e-5 --test_size 0.2
 `    
 ### Inferencing the model:
-`python infer_bert.py --test_sentence The cat is on the table --model_path models/ner_model_bert
+`python ner_classification/infer_bert.py --test_sentence "The cat is on the table" --model_path "ner_classification/models/ner_model_bert"
 `    
 Output example: `Extracted animal: cat`
 
@@ -102,6 +102,6 @@ Output example: `Extracted animal: cat`
 **Input text:**
 "Wow! That cat is so cutyy!!"
 
-`python pipeline.py --image_path image_classification/examples/cat.png --text_input "Wow! That cat is so cutyy!!"`
+`python pipeline.py --image_path "image_classification/examples/cat.png" --text_input "Wow! That cat is so cutyy!!"`
 
 Output examples: `The predictions from both models are the same.`
