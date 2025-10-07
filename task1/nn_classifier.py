@@ -33,8 +33,14 @@ class NNClassifier(MNISTClassifierInterface):
                            metrics=['accuracy'])
 
     def train(self, x_train, y_train):
+        """
+        Trains the model on the given training data, x and y.
+        """
         self.model.fit(x_train, y_train, epochs=5, batch_size=64)
 
     def predict(self, x_test):
+        """
+        Predicts the labels for the given test data, x.
+        """
         predictions = self.model.predict(x_test)
         return predictions.argmax(axis=1)
