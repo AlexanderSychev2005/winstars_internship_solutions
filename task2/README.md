@@ -38,10 +38,7 @@
 ├── ner_classification/
 │   ├── models/
 │   ├── train_bert.py
-│   ├── infer_bert.py
-│   ├── models
-│   │   ├── **/*.h5
-│   └── logs
+│   └── infer_bert.py
 ├── pipeline.py
 ├── README.md
 ├── EDA.ipynb
